@@ -90,33 +90,29 @@ var finances = [
 // returns the total number of months in the dataset
 
 function getTotalMonths() {
-    console.log("The total number of months is " + finances.length);
     return finances.length;
     }
 
 // returns the net Profit/Losses over the entire period
-
 function getTotalNetPnl() {
     var total = 0;
     for (var i = 0; i < finances.length; i++) {
         total += finances[i][1];
     }
-    console.log(total);
     return total;
 }
 
 // returns the average of the **changes** in Profit/Losses over the entire period
-
 function getAverageChange() {
     var total = 0;
 
     for (var i = 0; i < finances.length; i++) {
         total += finances[i][1];
     }
-    var average = total / finances.length;
-    console.log(average);
-    return average;
 
+    var average = total / finances.length;
+
+    return average;
 }
 
 
@@ -124,8 +120,44 @@ function getAverageChange() {
 // (`Total/Number of months`)
     
 // The greatest increase in profits (date and amount) over the entire period.
-    
+function getGreatestIncrease() {
+    // set the greatest increase to the first value
+    var greatestIncreaseAmount = finances[0][1];
+    var greatestIncreaseMonth = finances[0][0];
+    // loop over all rows
+    for (var i = 0; i < finances.length; i++) {
+        // if the current row's profit is greater than the greatest increase rewrite the greatest increase
+        if (finances[i][1] > greatestIncreaseAmount) {
+            greatestIncreaseAmount = finances[i][1];
+            greatestIncreaseMonth = finances[i][0];        }
+    }
+    return { greatestIncreaseAmount, greatestIncreaseMonth };
+}
 // The greatest decrease in losses (date and amount) over the entire period.
+function getGreatestDecrease() {
+    // set the greatest decrease to the first value
+    var greatestDecreaseAmount = finances[0][1];
+    var greatestDecreaseMonth = finances[0][0];
+    // loop over all rows
+    for (var i = 0; i < finances.length; i++) {
+        // if the current row's profit is less than the greatest decrease rewrite the greatest decrease
+        if (finances[i][1] < greatestDecreaseAmount) {
+            greatestDecreaseAmount = finances[i][1];
+            greatestDecreaseMonth = finances[i][0];
+        }
+    }
+    return { greatestDecreaseAmount, greatestDecreaseMonth };
+}
 
-
-
+// begin the output
+console.log("Financial Analysis");
+console.log("----------------------------");
+console.log("Total months: " + getTotalMonths());
+console.log("Total net PNL: £ " + getTotalNetPnl());
+// log the average change to 2 decimal places
+console.log("Average change: " + getAverageChange().toFixed(2));
+//make a function to get the greatest increase and greatest decrease
+const greatestIncrease = getGreatestIncrease();
+const greatestDecrease = getGreatestDecrease();
+console.log("Greatest Increase in Profits: £  " + greatestIncrease.greatestIncreaseAmount + " (" + greatestIncrease.greatestIncreaseMonth + ")" );
+console.log("Greatest Decrease in Profits: £ " + greatestDecrease.greatestDecreaseAmount + " (" + greatestDecrease.greatestDecreaseMonth + ")" );
