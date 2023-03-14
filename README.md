@@ -17,7 +17,7 @@ https://jack-educational.github.io/console-Finances/
 - [Contributing](#contributing)
 - [Questions](#questions)
   ## Installation
-  None requires. This runs in a web browser.
+  None required. This runs in a web browser.
 
   ## Usage
   Simply navigate to the live deployment URL at the top of the readme. You will need to open the console to display the results.
