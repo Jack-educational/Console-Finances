@@ -1,5 +1,5 @@
 
-# PASSWORD GENERATOR   <image src="https://img.shields.io/badge/license-MIT-green/size=100"> 
+# CONSOLE FINANCES   <image src="https://img.shields.io/badge/license-MIT-green/size=100"> 
 ## Live deployment
 
 https://jack-educational.github.io/console-Finances/
