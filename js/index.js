@@ -88,62 +88,79 @@ var finances = [
 ];
 
 // returns the total number of months in the dataset
-
 function getTotalMonths() {
     return finances.length;
     }
 
 // returns the net Profit/Losses over the entire period
 function getTotalNetPnl() {
-    var total = 0;
-    for (var i = 0; i < finances.length; i++) {
+    let total = 0;
+    for (let i = 0; i < finances.length; i++) {
         total += finances[i][1];
     }
     return total;
 }
 
-// returns the average of the **changes** in Profit/Losses over the entire period
-function getAverageChange() {
-    var total = 0;
+// created function to get the differences between each month for use on the next function
+function getDifferences() {
+    // empty array to hold the differences
+    let differences = [];
 
-    for (var i = 0; i < finances.length; i++) {
-        total += finances[i][1];
+    // loop over them starting at the second one (i = 1) because we are comparing the current row to the previous row
+    for (let i = 1; i < finances.length; i++) {
+        let difference = finances[i][1] - finances[i - 1][1];
+        differences.push(difference);
     }
-
-    var average = total / finances.length;
-
-    return average;
+    return differences;
 }
 
+// returns the average of the **changes** in Profit/Losses over the entire period
+function getAverageChange() {
+    // take the differences from the getDifferences function
+    let differences = getDifferences();
 
-// You will need to track what the total change in profits are from month to month and then find the average.
-// (`Total/Number of months`)
-    
+    // instantiate the sum of differences and the average change variables to 0
+    let differenceSum = 0;
+    for (let value of differences) {
+        differenceSum += value;
+    }
+    let averageChange = differenceSum / (finances.length - 1);
+    return averageChange;
+}
+
 // The greatest increase in profits (date and amount) over the entire period.
 function getGreatestIncrease() {
+    // take the differences from the getDifferences function
+    let differences = getDifferences();
+
     // set the greatest increase to the first value
-    var greatestIncreaseAmount = finances[0][1];
-    var greatestIncreaseMonth = finances[0][0];
+    let greatestIncreaseAmount = differences[0];
+    let greatestIncreaseMonth = differences[0];
+
     // loop over all rows
-    for (var i = 0; i < finances.length; i++) {
+    for (let i = 0; i < finances.length; i++) {
         // if the current row's profit is greater than the greatest increase rewrite the greatest increase
-        if (finances[i][1] > greatestIncreaseAmount) {
-            greatestIncreaseAmount = finances[i][1];
-            greatestIncreaseMonth = finances[i][0];        }
+        if (differences[i] > greatestIncreaseAmount) {
+            greatestIncreaseAmount = differences[i];
+            greatestIncreaseMonth = finances[i + 1][0];
+        }
     }
     return { greatestIncreaseAmount, greatestIncreaseMonth };
 }
 // The greatest decrease in losses (date and amount) over the entire period.
 function getGreatestDecrease() {
-    // set the greatest decrease to the first value
-    var greatestDecreaseAmount = finances[0][1];
-    var greatestDecreaseMonth = finances[0][0];
+    // take the differences from the getDifferences function
+    let differences = getDifferences();
+
+    // set the greatest increase to the first value
+    let greatestDecreaseAmount = differences[0];
+    let greatestDecreaseMonth = differences[0];
     // loop over all rows
-    for (var i = 0; i < finances.length; i++) {
-        // if the current row's profit is less than the greatest decrease rewrite the greatest decrease
-        if (finances[i][1] < greatestDecreaseAmount) {
-            greatestDecreaseAmount = finances[i][1];
-            greatestDecreaseMonth = finances[i][0];
+    for (let i = 0; i < finances.length; i++) {
+        // if the current row's profit is greater than the greatest increase rewrite the greatest increase
+        if (differences[i] < greatestDecreaseAmount) {
+            greatestDecreaseAmount = differences[i];
+            greatestDecreaseMonth = finances[i + 1][0];
         }
     }
     return { greatestDecreaseAmount, greatestDecreaseMonth };
@@ -155,7 +172,7 @@ console.log("----------------------------");
 console.log("Total months: " + getTotalMonths());
 console.log("Total net PNL: £ " + getTotalNetPnl());
 // log the average change to 2 decimal places
-console.log("Average change: " + getAverageChange().toFixed(2));
+console.log("Average change: £ " + getAverageChange().toFixed(2));
 //make a function to get the greatest increase and greatest decrease
 const greatestIncrease = getGreatestIncrease();
 const greatestDecrease = getGreatestDecrease();
